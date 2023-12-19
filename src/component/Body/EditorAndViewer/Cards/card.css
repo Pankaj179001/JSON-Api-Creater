@@ -1,13 +1,19 @@
 .cards {
   margin-top: 1%;
-  /* display: flex; */
+  display: flex;
   width: 100%;
   border-radius: "10px";
-  height: 600px;
-  gap: 1%;
+  /* height: 600px; */
+  margin: auto;
+  row-gap: 10px;
   /* box-shadow: rgba(0, 0, 0, 0.2) 0px 22px 70px 4px; */
 }
 
+@media screen and (max-width: 1400px) {
+  .cards {
+    flex-direction: column;
+  }
+}
 .card1,
 .card2 {
   display: flex;
@@ -27,6 +33,9 @@
   word-wrap: break-word;
   /* box-shadow: rgba(0, 0, 0, 0.2) 0px 22px 70px 4px; */
 }
+/* textarea {
+  width: "100%";
+} */
 
 textarea:focus {
   color: #495057;

@@ -24,6 +24,7 @@ const Card = (props: CardProps) => {
           placeItems: "center",
           margin: "auto",
           gap: 10,
+          marginTop: "2%",
         }}
         action=""
         method="post"
@@ -36,25 +37,30 @@ const Card = (props: CardProps) => {
             fontSize: "30px",
             padding: 1.5,
           }}
-          name=""   
+          name=""
           placeholder="JSON Response Body"
           id=""
         />
-        <div>
+        <div style={{ display: "flex" }}>
           <button type="button">Create API</button>
-          <button style={{ marginLeft: "20px", cursor: "auto" }}>
+          {/* <button style={{ marginLeft: "20px", cursor: "auto" }}>
             Create API
-          </button>
+          </button> */}
+          <div
+            style={{ display: "flex", margin: "auto", gap: 7, marginLeft: 23 }}
+          >
+            <p> Test Your API</p>
+            <label className="toggle-btn">
+              {/* <label htmlFor="checkbox">Test Api</label> */}
+              <input
+                type="checkbox"
+                onClick={() => setApiTesting(!ApiTesting)}
+              />
+              <div className="slider"></div>
+            </label>
+          </div>
         </div>
       </form>
-      <div>
-        Test Your API
-        <label className="toggle-btn">
-          {/* <label htmlFor="checkbox">Test Api</label> */}
-          <input type="checkbox" onClick={() => setApiTesting(!ApiTesting)} />
-          <div className="slider"></div>
-        </label>
-      </div>
     </div>
   );
 };

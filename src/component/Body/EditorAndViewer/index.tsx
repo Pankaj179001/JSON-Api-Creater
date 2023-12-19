@@ -4,7 +4,7 @@ const ApiEditor = () => {
   return (
     <div
       style={{
-        width: "80%",
+        width: "100%",
         margin: "4%",
         height: "auto",
         fontWeight: "bold",
@@ -22,4 +22,3 @@ const ApiEditor = () => {
 };
 
 export { ApiEditor };
-
