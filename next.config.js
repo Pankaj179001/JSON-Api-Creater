@@ -1,4 +1,9 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {}
+const { env } = require("process");
 
-module.exports = nextConfig
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: false,
+  env: {},
+};
+
+module.exports = nextConfig;

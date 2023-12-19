@@ -1,0 +1,82 @@
+.cards {
+  margin-top: 1%;
+  /* display: flex; */
+  width: 100%;
+  border-radius: "10px";
+  height: 600px;
+  gap: 1%;
+  /* box-shadow: rgba(0, 0, 0, 0.2) 0px 22px 70px 4px; */
+}
+
+.card1,
+.card2 {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-radius: "10px";
+  height: 100%;
+}
+
+.card2 {
+  /* background-color: chocolate; */
+  /* color: white; */
+  text-align: justify;
+  word-wrap: break-word;
+  /* box-shadow: rgba(0, 0, 0, 0.2) 0px 22px 70px 4px; */
+}
+
+textarea:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  /* box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); */
+}
+
+button:hover {
+  background-color: black;
+  cursor: pointer;
+  color: white;
+  border-color: black;
+}
+
+.container {
+  padding: 2px 16px;
+}
+
+.toggle-btn {
+  position: sticky;
+  display: inline-block;
+  width: 50px;
+  height: 20px;
+  background-color: black;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.toggle-btn .slider {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+/* Style for the checked state of the toggle button */
+.toggle-btn input:checked + .slider {
+  transform: translateX(30px);
+  background-color: #ccc;
+}
+
+/* Hide the default checkbox input */
+.toggle-btn input {
+  opacity: 1;
+  width: 0;
+  height: 0;
+}
