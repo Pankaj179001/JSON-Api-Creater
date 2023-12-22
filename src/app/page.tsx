@@ -12,7 +12,7 @@ export default function Home() {
           alignItems: "center",
           margin: "2%",
           gap: 20,
-          height:"100%"
+          height: "100%",
         }}
         className="homePage"
       >
