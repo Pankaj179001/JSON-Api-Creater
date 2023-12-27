@@ -1,13 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { connection } from "../utils/(config)/db";
+import { UserModel } from "../utils/(models)";
 import { NextResponse } from "next/server";
-import { connection } from "../(config)/db";
-import { UserModel } from "../(models)";
 
-export async function GET(req:NextApiRequest,res:NextApiResponse) {
+export async function GET(req:NextApiRequest) {
     await connection()
-    // console.log("GET REQUEST");
    const data =await UserModel.find()
-    return NextResponse.json({      type: "GET REQUEST",
-      data,
-    });
+
+    return NextResponse?.json({data})
 }     
