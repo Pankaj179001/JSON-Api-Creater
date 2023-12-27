@@ -1,6 +1,10 @@
+'use client'
 import React, { useState } from "react";
 import "./card.css";
 import { Box } from "@mui/material";
+import Selector from "@/component/Common/components/Selector";
+import { RandomString, SampleObject } from "../data/SampleObject";
+export const DataType = ["array", "object", "string"];
 
 interface CardProps {
   ApiTesting: boolean;
@@ -18,6 +22,11 @@ const Card = (props: CardProps) => {
         If you want to create a simple API for testing purposes, simply enter a
         response body below and press Create API to get your custom API URL
       </p>
+      <Selector
+        label={"Data Type"}
+        items={DataType?.map((i) => ({ itemName: i, value: i }))}
+        sx={{ width: ApiTesting ? "50%" : "25%" }}
+      />
       <form
         style={{
           display: "grid",
@@ -42,11 +51,12 @@ const Card = (props: CardProps) => {
               fontFamily: "serif",
               height: "400px",
               width: "100%",
-              fontSize: "30px",
+              fontSize: "1.5rem",
               padding: 1.5,
             }}
             name=""
-            
+            onChange={()=>{}}
+            value={SampleObject}
             placeholder="JSON Response Body"
             id=""
           />

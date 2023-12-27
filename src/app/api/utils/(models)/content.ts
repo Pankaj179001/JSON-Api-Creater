@@ -15,6 +15,7 @@ const ContentSchema = new Schema(
       enum: contentType,
       required: true,
     },
+    endpoint: { type: Schema?.ObjectId, ref: "endpoints" },
   },
   { timestamps: true, collection: "content" }
 );

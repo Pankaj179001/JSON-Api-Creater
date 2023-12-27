@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import "./card.css";
 import TestingCard from "./TestingCard";
-import Card from "./Card";
+import Card from "./APiEditCard";
 const Cards = () => {
   const [ApiTesting, setApiTesting] = useState(false);
 

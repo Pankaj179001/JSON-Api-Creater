@@ -9,7 +9,16 @@ const EndpointSchema = new Schema(
   {
     name: {
       type: String,
+      required: true,
+    },
+    description: {
+      type: String,
       required: false,
+    },
+    pagination: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
     endpointType: {
       type: String,
@@ -17,6 +26,7 @@ const EndpointSchema = new Schema(
       required: true,
     },
     user: { type: Schema?.ObjectId, ref: "user" },
+    content: { type: Schema?.ObjectId, ref: "content" },
   },
   { timestamps: true, collection: "endpoints" }
 );

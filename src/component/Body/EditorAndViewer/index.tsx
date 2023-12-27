@@ -1,5 +1,4 @@
 import Cards from "./Cards";
-
 const ApiEditor = () => {
   return (
     <div
@@ -18,9 +17,11 @@ const ApiEditor = () => {
         The editor below allows you to create a fake JSON API with your own fake
         data. Scroll down for ready-to-use examples of different fake APIs.{" "}
       </h2>
+
       <Cards />
     </div>
   );
 };
 
 export { ApiEditor };
+

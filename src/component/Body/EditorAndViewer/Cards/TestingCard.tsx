@@ -4,7 +4,7 @@ const TestingCard = ({ ApiTesting }: { ApiTesting: boolean }) => {
   return (
     <div
       className="card2"
-      style={{ display: ApiTesting ? "flex" : "none", marginTop: "1%" }}
+      style={{ display: ApiTesting ? "flex" : "none", marginTop: "4%" }}
     >
       <h4>
         <b>Test Your Dummy Api Here</b>
