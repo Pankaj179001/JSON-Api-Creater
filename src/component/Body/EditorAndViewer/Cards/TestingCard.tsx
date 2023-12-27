@@ -15,23 +15,34 @@ const TestingCard = ({ ApiTesting }: { ApiTesting: boolean }) => {
           placeItems: "center",
           margin: "auto",
           gap: 10,
+          width: "100%",
         }}
         action=""
         method="post"
       >
-        <div style={{ display: "flex", gap: 7 }}>
+        <div
+          style={{
+            display: "flex",
+            width: "70%",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 7,
+          }}
+        >
           <input
             placeholder="Enter url here"
-            style={{ height: "38px", width: "600px" }}
+            style={{ height: "38px", width: "70%" }}
             type="text"
           />
-          <button type="button">Test API</button>
+          <button style={{ width: "30%" }} type="button">
+            Test API
+          </button>
         </div>
         <textarea
           style={{
             fontFamily: "serif",
             height: "400px",
-            width: "800px",
+            width: "90%",
             fontSize: "30px",
             padding: 1.5,
           }}

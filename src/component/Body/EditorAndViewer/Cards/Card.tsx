@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./card.css";
+import { Box } from "@mui/material";
 
 interface CardProps {
   ApiTesting: boolean;
@@ -7,7 +8,6 @@ interface CardProps {
 }
 const Card = (props: CardProps) => {
   const { ApiTesting, setApiTesting } = props;
-  // const [first, setfirst] = useState('second')
 
   return (
     <div className="card1">
@@ -24,30 +24,45 @@ const Card = (props: CardProps) => {
           placeItems: "center",
           margin: "auto",
           gap: 10,
+          width: "100%",
           marginTop: "2%",
         }}
         action=""
         method="post"
       >
-        <textarea
-          style={{
-            fontFamily: "serif",
-            height: "400px",
-            width: "800px",
-            fontSize: "30px",
-            padding: 1.5,
+        <Box
+          sx={{
+            display: "grid",
+            width: "90%",
+            placeItems: "center",
           }}
-          name=""
-          placeholder="JSON Response Body"
-          id=""
-        />
+        >
+          <textarea
+            style={{
+              fontFamily: "serif",
+              height: "400px",
+              width: "100%",
+              fontSize: "30px",
+              padding: 1.5,
+            }}
+            name=""
+            
+            placeholder="JSON Response Body"
+            id=""
+          />
+        </Box>
         <div style={{ display: "flex" }}>
           <button type="button">Create API</button>
           {/* <button style={{ marginLeft: "20px", cursor: "auto" }}>
             Create API
           </button> */}
           <div
-            style={{ display: "flex", margin: "auto", gap: 7, marginLeft: 23 }}
+            style={{
+              display: "flex",
+              margin: "auto",
+              gap: 7,
+              marginLeft: 23,
+            }}
           >
             <p> Test Your API</p>
             <label className="toggle-btn">
