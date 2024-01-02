@@ -7,7 +7,7 @@ export enum endpointType {
 
 const EndpointSchema = new Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true,
     },
@@ -23,6 +23,7 @@ const EndpointSchema = new Schema(
     endpointType: {
       type: String,
       enum: endpointType,
+      default: endpointType?.CUSTOM,
       required: true,
     },
     user: { type: Schema?.ObjectId, ref: "user" },

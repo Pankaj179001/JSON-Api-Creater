@@ -1,9 +1,10 @@
-'use client'
-import React, { useState } from "react";
-import "./card.css";
-import { Box } from "@mui/material";
+"use client";
 import Selector from "@/component/Common/components/Selector";
-import { RandomString, SampleObject } from "../data/SampleObject";
+import { Box, Typography } from "@mui/material";
+import React from "react";
+import { SampleObject, SampleString } from "../data/SampleObject";
+import "./card.css";
+import { SampleArray } from "../data/SampleArray";
 export const DataType = ["array", "object", "string"];
 
 interface CardProps {
@@ -12,20 +13,27 @@ interface CardProps {
 }
 const Card = (props: CardProps) => {
   const { ApiTesting, setApiTesting } = props;
-
+  const [dataType, setDataType] = React.useState<any>("object");
   return (
-    <div className="card1">
-      <h2>
-        <b>Free API Editor</b>
-      </h2>
-      <p>
-        If you want to create a simple API for testing purposes, simply enter a
-        response body below and press Create API to get your custom API URL
-      </p>
+    <Box className="card1">
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: "bold",
+          background: "linear-gradient(45deg,#00ccff, #ff3366,#203f9c)",
+          backgroundClip: "text",
+          webkitBackgroundClip: "text",
+          color: "transparent",
+          textAlign: "center",
+        }}
+      >
+        Free API Editor{" "}
+      </Typography>
       <Selector
         label={"Data Type"}
         items={DataType?.map((i) => ({ itemName: i, value: i }))}
         sx={{ width: ApiTesting ? "50%" : "25%" }}
+        setDataType={setDataType}
       />
       <form
         style={{
@@ -34,7 +42,7 @@ const Card = (props: CardProps) => {
           margin: "auto",
           gap: 10,
           width: "100%",
-          marginTop: "2%",
+          // marginTop: "2%",
         }}
         action=""
         method="post"
@@ -55,8 +63,8 @@ const Card = (props: CardProps) => {
               padding: 1.5,
             }}
             name=""
-            onChange={()=>{}}
-            value={SampleObject}
+            onChange={() => {}}
+            value={dataType=="object"?SampleObject:dataType=="array"?SampleArray:SampleString}
             placeholder="JSON Response Body"
             id=""
           />
@@ -72,7 +80,7 @@ const Card = (props: CardProps) => {
               margin: "auto",
               gap: 7,
               marginLeft: 23,
-            }}
+            }} 
           >
             <p> Test Your API</p>
             <label className="toggle-btn">
@@ -86,7 +94,7 @@ const Card = (props: CardProps) => {
           </div>
         </div>
       </form>
-    </div>
+    </Box>
   );
 };
 

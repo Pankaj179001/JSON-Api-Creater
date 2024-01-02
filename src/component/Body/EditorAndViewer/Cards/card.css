@@ -1,5 +1,7 @@
+
+/* cards css */
 .cards {
-  margin-top: 1%;
+  /* margin-top: 2%; */
   display: flex;
   width: 100%;
   border-radius: "10px";
@@ -7,15 +9,14 @@
   margin: auto;
   row-gap: 10px;
   /* box-shadow: rgba(0, 0, 0, 0.2) 0px 22px 70px 4px; */
-}
+} 
 
 @media screen and (max-width: 1700px) {
   .cards {
     flex-direction: column;
   }
 }
-.card1,
-.card2 {
+.card1 {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -26,26 +27,17 @@
   height: 100%;
 }
 
-.card2 {
-  /* background-color: chocolate; */
-  /* color: white; */
-  text-align: justify;
-  word-wrap: break-word;
-  /* box-shadow: rgba(0, 0, 0, 0.2) 0px 22px 70px 4px; */
-}
-/* textarea {
-  width: "100%";
-} */
+
+
 
 textarea:focus {
-  color: #495057;
-  background-color: #fff;
+  color: black;
+  background-color: #fff; 
   border-color: #80bdff;
   outline: 0;
-  /* box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); */
 }
 
-button:hover {
+button:hover {  
   background-color: black;
   cursor: pointer;
   color: white;

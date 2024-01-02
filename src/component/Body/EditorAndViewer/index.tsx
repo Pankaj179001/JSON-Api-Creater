@@ -1,11 +1,11 @@
 import Cards from "./Cards";
-const ApiEditor = () => {
+const FormSection = () => {
   return (
     <div
       style={{
         display: "grid",
         width: "100%",
-        margin: "4%",
+        margin: "auto",
         fontWeight: "bold",
         alignItems: "center",
         placeItems: "center",
@@ -17,11 +17,13 @@ const ApiEditor = () => {
         The editor below allows you to create a fake JSON API with your own fake
         data. Scroll down for ready-to-use examples of different fake APIs.{" "}
       </h2>
-
+      <p>
+        If you want to create a simple API for testing purposes, simply enter a
+        response body below and press Create API to get your custom API URL
+      </p>
       <Cards />
     </div>
   );
 };
 
-export { ApiEditor };
-
+export { FormSection };

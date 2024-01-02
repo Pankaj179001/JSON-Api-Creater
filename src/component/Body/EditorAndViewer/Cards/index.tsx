@@ -8,9 +8,9 @@ const Cards = () => {
   const [ApiTesting, setApiTesting] = useState(false);
 
   return (
-    <div className="cards" style={{ gap: "10px !important" }}>
+    <div className="cards" style={{ marginTop: "2%" }}>
       <Card {...{ setApiTesting, ApiTesting }} />
-      <TestingCard ApiTesting={ApiTesting} /> 
+      {ApiTesting ? <TestingCard /> : <></>}
     </div>
   );
 };

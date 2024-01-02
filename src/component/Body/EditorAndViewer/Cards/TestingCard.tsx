@@ -1,14 +1,19 @@
+import { Box ,Typography} from "@mui/material";
 import React from "react";
 
-const TestingCard = ({ ApiTesting }: { ApiTesting: boolean }) => {
+const TestingCard = () => {
   return (
-    <div
-      className="card2"
-      style={{ display: ApiTesting ? "flex" : "none", marginTop: "4%" }}
+    <Box
+      className="card1"
     >
-      <h4>
-        <b>Test Your Dummy Api Here</b>
-      </h4>
+        <Typography variant="h4" sx={{fontWeight: "bold",
+    background: "linear-gradient(45deg,#ff3366,#203f9c,#00ccff)",
+    backgroundClip:"text",
+    webkitBackgroundClip: "text",
+    color: "transparent",
+    textAlign: "center"}}
+        >
+Test Your Dummy Api Here      </Typography>
       <form
         style={{
           display: "grid",
@@ -16,6 +21,7 @@ const TestingCard = ({ ApiTesting }: { ApiTesting: boolean }) => {
           margin: "auto",
           gap: 10,
           width: "100%",
+          marginTop:"1%"
         }}
         action=""
         method="post"
@@ -38,12 +44,13 @@ const TestingCard = ({ ApiTesting }: { ApiTesting: boolean }) => {
             Test API
           </button>
         </div>
+        
         <textarea
           style={{
             fontFamily: "serif",
             height: "400px",
             width: "90%",
-            fontSize: "30px",
+            fontSize: "30px", 
             padding: 1.5,
           }}
           placeholder="Api Response"
@@ -51,7 +58,7 @@ const TestingCard = ({ ApiTesting }: { ApiTesting: boolean }) => {
           disabled
         />
       </form>
-    </div>
+    </Box>
   );
 };
 

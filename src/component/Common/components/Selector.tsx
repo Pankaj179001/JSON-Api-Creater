@@ -1,4 +1,3 @@
-"use client";
 import * as React from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -13,13 +12,14 @@ interface Selector {
   setValue?: string;
   items: { itemName: string; value: string | number }[];
   sx?: SxProps<Theme>;
+  setDataType: React.Dispatch<React.SetStateAction<string>>;
+  dataType?: any;
 }
 
 export default function Selector(props: Selector) {
-  const { label, items, sx } = props;
-  const [age, setAge] = React.useState("");
+  const { label, items, sx, dataType, setDataType } = props;
   const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
+    setDataType(event.target.value);
   };
 
   return (
@@ -28,7 +28,7 @@ export default function Selector(props: Selector) {
       <Select
         labelId="demo-select-small-label"
         id="demo-select-small"
-        value={age}
+        value={dataType}
         label={label}
         onChange={handleChange}
       >

@@ -2,12 +2,13 @@ import { Schema, model, models } from "mongoose";
 
 const UserSchema = new Schema(
   {
-    ipAddress: {
+    username: {
       type: String,
       required: false,
     },
-    userAgent: {
-      type: String,
+    isguest: {
+      type: Boolean,
+      default: true,
       required: false,
     },
     endpoints: [{ type: Schema?.ObjectId, ref: "endpoints" }],

@@ -6,4 +6,4 @@ export const SampleObject = `{
     "city":"${faker.location.city()}",
     "image":"${faker.image.avatar()}"
   }`;
-export const RandomString=faker.string.alpha({ length: {min:11,max:20} })
+export const SampleString=faker.string.alpha({ length: {min:100,max:200} })
