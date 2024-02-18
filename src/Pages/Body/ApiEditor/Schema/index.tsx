@@ -3,13 +3,13 @@
 import React, { useState } from "react";
 import "./card.css";
 import TestingCard from "./TestingCard";
-import Card from "./APiEditCard";
+import ApiSchema from "./ApiSchema";
 const Cards = () => {
   const [ApiTesting, setApiTesting] = useState(false);
 
   return (
     <div className="cards" style={{ marginTop: "2%" }}>
-      <Card {...{ setApiTesting, ApiTesting }} />
+      <ApiSchema {...{ setApiTesting, ApiTesting }} />
       {ApiTesting ? <TestingCard /> : <></>}
     </div>
   );

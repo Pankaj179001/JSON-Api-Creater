@@ -1,4 +1,6 @@
-import Cards from "./Cards";
+import Cards from "./Schema";
+import { TextField, Button, Grid, Box } from "@mui/material";
+
 const FormSection = () => {
   return (
     <div
@@ -21,9 +23,11 @@ const FormSection = () => {
         If you want to create a simple API for testing purposes, simply enter a
         response body below and press Create API to get your custom API URL
       </p>
+
       <Cards />
     </div>
   );
 };
-
+{
+}
 export { FormSection };

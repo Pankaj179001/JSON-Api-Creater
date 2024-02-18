@@ -1,5 +1,5 @@
-import { FormSection } from "@/component/Body/EditorAndViewer";
-import ReadyToUse from "@/component/Body/ReadyToUseUrl";
+import { FormSection } from "@/Pages/Body/ApiEditor";
+import ReadyToUse from "@/Pages/Body/ReadyToUseUrl";
 
 export default function Home() {
   return (
@@ -11,10 +11,8 @@ export default function Home() {
           justifyContent: "center",
           alignItems: "center",
           margin: "2%",
-          // gap: 20,
           height: "100%",
         }}
-        className="homePage"
       >
         <h1>FAKE JSON API</h1>
         <h3 style={{ marginTop: "1%", opacity: ".85" }}>
