@@ -1,17 +1,10 @@
 "use client";
-import Selector from "@/Common/components/Selector";
-import { CustomText } from "@/Pages/StyledComponent/CustomText";
-import {
-  Box,
-  Button,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  TextField,
-} from "@mui/material";
+import FormDialog from "@/Common/Components/DialogBox";
+import SelectOptions from "@/Common/Components/SelectOptions";
+import Selector from "@/Common/Components/Selector";
+import { CustomText } from "@/Components/StyledComponent/CustomText";
+import { Box, Button, TextField } from "@mui/material";
 import React, { useEffect } from "react";
-import "./card.css";
 interface IField {
   id?: string;
   name: string;
@@ -23,8 +16,10 @@ interface CardProps {
   setApiTesting: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const ApiSchema = (props: CardProps) => {
-  const id = React.useId();
   const { ApiTesting, setApiTesting } = props;
+  const [OpenDialog, setOpenDialog] = React.useState(false);
+  const [SelectedValue, setSelectedValue] = React.useState(false); //set dia
+
   const [SelectedSchema, setSelectedSchema] = React.useState("");
   const [SelectedDataType, setSelectedDataType] = React.useState("");
   const InitialField: IField = {
@@ -131,7 +126,7 @@ const ApiSchema = (props: CardProps) => {
                 ]}
                 setDataType={setSelectedDataType}
                 Value={SelectedDataType}
-                buttonStyle={{ padding: 2 }}
+                buttonStyle={{ padding: 4 }}
                 sx={{
                   gap: 0,
                   width: "222px",
@@ -140,6 +135,7 @@ const ApiSchema = (props: CardProps) => {
                 }}
               />
             </Box>
+
             <Button
               type="submit"
               variant="contained"
@@ -184,10 +180,16 @@ const ApiSchema = (props: CardProps) => {
         </Box>
       </Box>
       <div style={{ display: "flex" }}>
-        <button type="button">Create API</button>
-        {/* <button style={{ marginLeft: "20px", cursor: "auto" }}>
-            Create API
-          </button> */}
+        <button
+          onClick={() => {
+            Schema?.length
+              ? setOpenDialog((pre) => !pre)
+              : window.alert("please select atleast one field to create api");
+          }}
+          type="button"
+        >
+          Create API
+        </button>
         <div
           style={{
             display: "flex",
@@ -204,6 +206,51 @@ const ApiSchema = (props: CardProps) => {
           </label>
         </div>
       </div>
+      {OpenDialog ? (
+        <FormDialog
+          open={OpenDialog}
+          setOpen={setOpenDialog}
+          heading={"Select Options"}
+        >
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="recordsToCreate"
+            name="recordsToCreate"
+            label="Number of records to Create"
+            type="number"
+            fullWidth
+            variant="standard"
+          />{" "}
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="recordsToCreate"
+            name="recordsToCreate"
+            label="Number of records to Create"
+            type="number"
+            fullWidth
+            variant="standard"
+          />
+          <SelectOptions
+            label={"Pagination Required"}
+            Value={SelectedValue as unknown as string}
+            setValue={
+              setSelectedValue as unknown as React.Dispatch<
+                React.SetStateAction<string>
+              >
+            }
+            options={[
+              { label: "false", value: false as any },
+              { label: "true", value: true as any },
+            ]}
+          />
+        </FormDialog>
+      ) : (
+        <></>
+      )}
     </Box>
   );
 };

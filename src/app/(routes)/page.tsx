@@ -1,5 +1,5 @@
-import { FormSection } from "@/Pages/Body/ApiEditor";
-import ReadyToUse from "@/Pages/Body/ReadyToUseUrl";
+import { FormSection } from "@/Components/ApiEditor";
+import ReadyToUse from "@/Components/ReadyToUseUrl";
 
 export default function Home() {
   return (

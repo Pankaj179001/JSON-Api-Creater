@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import "./card.css";
-import TestingCard from "./TestingCard";
+import "../Styles/card.css";
 import ApiSchema from "./ApiSchema";
+import TestingCard from "./TestingCard";
 const Cards = () => {
   const [ApiTesting, setApiTesting] = useState(false);
 

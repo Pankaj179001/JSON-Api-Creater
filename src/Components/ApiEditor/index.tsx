@@ -1,5 +1,4 @@
-import Cards from "./Schema";
-import { TextField, Button, Grid, Box } from "@mui/material";
+import Cards from "./Components";
 
 const FormSection = () => {
   return (

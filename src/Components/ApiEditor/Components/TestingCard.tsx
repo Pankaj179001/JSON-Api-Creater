@@ -1,19 +1,22 @@
-import { Box ,Typography} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
 
 const TestingCard = () => {
   return (
-    <Box
-      className="card1"
-    >
-        <Typography variant="h4" sx={{fontWeight: "bold",
-    background: "linear-gradient(45deg,#ff3366,#203f9c,#00ccff)",
-    backgroundClip:"text",
-    webkitBackgroundClip: "text",
-    color: "transparent",
-    textAlign: "center"}}
-        >
-Test Your Dummy Api Here      </Typography>
+    <Box className="card1">
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: "bold",
+          background: "linear-gradient(45deg,#ff3366,#203f9c,#00ccff)",
+          backgroundClip: "text",
+          webkitBackgroundClip: "text",
+          color: "transparent",
+          textAlign: "center",
+        }}
+      >
+        Test Your Dummy Api Here{" "}
+      </Typography>
       <form
         style={{
           display: "grid",
@@ -21,7 +24,7 @@ Test Your Dummy Api Here      </Typography>
           margin: "auto",
           gap: 10,
           width: "100%",
-          marginTop:"1%"
+          marginTop: "1%",
         }}
         action=""
         method="post"
@@ -44,13 +47,13 @@ Test Your Dummy Api Here      </Typography>
             Test API
           </button>
         </div>
-        
+
         <textarea
           style={{
-            fontFamily: "serif",
+            fontFamily: "sans-serif",
             height: "400px",
             width: "90%",
-            fontSize: "30px", 
+            fontSize: "30px",
             padding: 1.5,
           }}
           placeholder="Api Response"

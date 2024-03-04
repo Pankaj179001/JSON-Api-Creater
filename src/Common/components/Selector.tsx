@@ -1,4 +1,4 @@
-import { RemoveListItem } from "@/Pages/StyledComponent/RemoveItem";
+import { RemoveListItem } from "@/Components/StyledComponent/RemoveItem";
 import { Theme } from "@emotion/react";
 import { Box, Button, SxProps } from "@mui/material";
 import * as React from "react";
