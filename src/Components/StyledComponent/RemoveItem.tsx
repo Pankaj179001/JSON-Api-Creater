@@ -12,4 +12,5 @@ export const RemoveListItem = styled(Box)({
   alignItems: "center",
   borderRadius: "50%",
   cursor: "pointer",
+  color: "#fff",
 });

@@ -1,7 +1,8 @@
 "use client";
-import FormDialog from "@/Common/Components/DialogBox";
-import SelectOptions from "@/Common/Components/SelectOptions";
-import Selector from "@/Common/Components/Selector";
+
+import FormDialog from "@/Common/components/DialogBox";
+import SelectOptions from "@/Common/components/SelectOptions";
+import Selector from "@/Common/components/Selector";
 import { CustomText } from "@/Components/StyledComponent/CustomText";
 import { Box, Button, TextField } from "@mui/material";
 import React, { useEffect } from "react";
@@ -86,7 +87,14 @@ const ApiSchema = (props: CardProps) => {
           flexDirection: { xs: "column", md: "row" },
         }}
       >
-        <form style={{ width: "45%" }} onSubmit={OnSubmitHandler}>
+        <form
+          style={{
+            width: "45%",
+            boxSizing: "border-box",
+            margin: "auto",
+          }}
+          onSubmit={OnSubmitHandler}
+        >
           <Box
             sx={{
               display: "flex",
@@ -94,6 +102,7 @@ const ApiSchema = (props: CardProps) => {
               gap: 2,
               flexFlow: "column",
               alignItems: "center",
+              py: 3,
             }}
           >
             <TextField
@@ -114,27 +123,27 @@ const ApiSchema = (props: CardProps) => {
               variant="outlined"
               size="small"
             />
-            <Box sx={{ m: "auto" }}>
-              <Selector
-                label={"Type"}
-                items={[
-                  { itemName: "string", value: "string", selected: true },
-                  { itemName: "number", value: "number", selected: false },
-                  { itemName: "object", value: "object", selected: false },
-                  { itemName: "array", value: "array", selected: false },
-                  { itemName: "boolean", value: "boolean", selected: false },
-                ]}
-                setDataType={setSelectedDataType}
-                Value={SelectedDataType}
-                buttonStyle={{ padding: 4 }}
-                sx={{
-                  gap: 0,
-                  width: "222px",
-                  display: "grid",
-                  gridTemplateColumns: "auto auto auto",
-                }}
-              />
-            </Box>
+            {/* <Box sx={{ m: "auto" }}> */}
+            <Selector
+              label={"Type"}
+              items={[
+                { itemName: "string", value: "string", selected: true },
+                { itemName: "number", value: "number", selected: false },
+                { itemName: "object", value: "object", selected: false },
+                { itemName: "array", value: "array", selected: false },
+                { itemName: "boolean", value: "boolean", selected: false },
+              ]}
+              setDataType={setSelectedDataType}
+              Value={SelectedDataType}
+              buttonStyle={{ padding: 4 }}
+              sx={{
+                gap: 0,
+                width: "222px",
+                display: "grid",
+                gridTemplateColumns: "auto auto auto",
+              }}
+            />
+            {/* </Box> */}
 
             <Button
               type="submit"
@@ -166,7 +175,13 @@ const ApiSchema = (props: CardProps) => {
               value: i?.name,
               selected: false,
             }))}
-            sx={{ width: ApiTesting ? "50%" : "25%", p: 0.5 }}
+            sx={{
+              // width: ApiTesting ? "50%" : "25%",
+              p: 0.8,
+              gap: 1,
+              display: "flex",
+              flexWrap: "wrap",
+            }}
             setDataType={setSelectedSchema}
             displayRemoveIcon={true}
             Value={SelectedSchema}
