@@ -14,7 +14,7 @@ const NotFound = () => {
         <Grid item>
           <ErrorIcon fontSize="large" sx={{ color: "red" }} />
           <Typography variant="h3" gutterBottom>
-            404 Not Found
+            404 Not Found 
           </Typography>
           <Typography variant="body1">
             The page you are looking for does not exist.

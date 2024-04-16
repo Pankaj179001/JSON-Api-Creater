@@ -12,9 +12,11 @@ export default function FormDialog({
   open,
   setOpen,
   children,
+  handleSubmit,
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleSubmit?: (data: any) => void;
   heading: string;
   description?: string;
   children: React.ReactNode;
@@ -35,6 +37,7 @@ export default function FormDialog({
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries((formData as any).entries());
             console.log(formJson);
+            handleSubmit && handleSubmit(formJson);
             handleClose();
           },
         }}

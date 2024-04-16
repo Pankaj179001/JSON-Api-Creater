@@ -4,8 +4,11 @@ import FormDialog from "@/Common/components/DialogBox";
 import SelectOptions from "@/Common/components/SelectOptions";
 import Selector from "@/Common/components/Selector";
 import { CustomText } from "@/Components/StyledComponent/CustomText";
+import { useAppDispatch } from "@/feature/Hooks";
+import { createApiRecords } from "@/feature/Slices/CreateApiSlice";
 import { Box, Button, TextField } from "@mui/material";
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 interface IField {
   id?: string;
   name: string;
@@ -20,7 +23,7 @@ const ApiSchema = (props: CardProps) => {
   const { ApiTesting, setApiTesting } = props;
   const [OpenDialog, setOpenDialog] = React.useState(false);
   const [SelectedValue, setSelectedValue] = React.useState(false); //set dia
-
+  const dispatch = useAppDispatch();
   const [SelectedSchema, setSelectedSchema] = React.useState("");
   const [SelectedDataType, setSelectedDataType] = React.useState("");
   const InitialField: IField = {
@@ -81,16 +84,17 @@ const ApiSchema = (props: CardProps) => {
           m: "auto",
           width: "100%",
           mt: 5,
-          gap: 1,
+          gap: 2,
           p: 2,
           height: "100%",
+          boxShadow: "inset 0 -2em 3em rgb(95 117 95 / 30%)",
           flexDirection: { xs: "column", md: "row" },
         }}
       >
         <form
           style={{
-            width: "45%",
             boxSizing: "border-box",
+            borderRadius: "7px",
             margin: "auto",
           }}
           onSubmit={OnSubmitHandler}
@@ -103,6 +107,7 @@ const ApiSchema = (props: CardProps) => {
               flexFlow: "column",
               alignItems: "center",
               py: 3,
+              textAlign: "center",
             }}
           >
             <TextField
@@ -113,7 +118,25 @@ const ApiSchema = (props: CardProps) => {
               variant="outlined"
               size="small"
             />
-
+            <Selector
+              label={"Type"}
+              items={[
+                { itemName: "string", value: "string", selected: true },
+                { itemName: "number", value: "number", selected: false },
+                // { itemName: "object", value: "object", selected: false },
+                // { itemName: "array", value: "array", selected: false },
+                { itemName: "boolean", value: "boolean", selected: false },
+              ]}
+              setDataType={setSelectedDataType}
+              Value={SelectedDataType}
+              buttonStyle={{ padding: 4 }}
+              sx={{
+                gap: 0.5,
+                // width: "222px",
+                display: "grid",
+                gridTemplateColumns: "auto auto auto",
+              }}
+            />
             <TextField
               label="Max-length"
               type="number"
@@ -123,27 +146,6 @@ const ApiSchema = (props: CardProps) => {
               variant="outlined"
               size="small"
             />
-            {/* <Box sx={{ m: "auto" }}> */}
-            <Selector
-              label={"Type"}
-              items={[
-                { itemName: "string", value: "string", selected: true },
-                { itemName: "number", value: "number", selected: false },
-                { itemName: "object", value: "object", selected: false },
-                { itemName: "array", value: "array", selected: false },
-                { itemName: "boolean", value: "boolean", selected: false },
-              ]}
-              setDataType={setSelectedDataType}
-              Value={SelectedDataType}
-              buttonStyle={{ padding: 4 }}
-              sx={{
-                gap: 0,
-                width: "222px",
-                display: "grid",
-                gridTemplateColumns: "auto auto auto",
-              }}
-            />
-            {/* </Box> */}
 
             <Button
               type="submit"
@@ -165,7 +167,7 @@ const ApiSchema = (props: CardProps) => {
             width: "100%",
             height: "100%",
             // border: "2px solid black",
-            minHeight: "200px",
+            borderRadius: "10px",
           }}
         >
           <Selector
@@ -226,6 +228,14 @@ const ApiSchema = (props: CardProps) => {
           open={OpenDialog}
           setOpen={setOpenDialog}
           heading={"Select Options"}
+          handleSubmit={(body) => {
+            dispatch(
+              createApiRecords({
+                data: Schema,
+                config: { ...body, pagination: SelectedValue },
+              })
+            );
+          }}
         >
           <TextField
             autoFocus
@@ -238,7 +248,7 @@ const ApiSchema = (props: CardProps) => {
             fullWidth
             variant="standard"
           />{" "}
-          <TextField
+          {/* <TextField
             autoFocus
             required
             margin="dense"
@@ -248,7 +258,7 @@ const ApiSchema = (props: CardProps) => {
             type="number"
             fullWidth
             variant="standard"
-          />
+          /> */}
           <SelectOptions
             label={"Pagination Required"}
             Value={SelectedValue as unknown as string}

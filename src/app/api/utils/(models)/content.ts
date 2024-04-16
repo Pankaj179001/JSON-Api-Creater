@@ -10,12 +10,11 @@ const ContentSchema = new Schema(
       type: String,
       required: true,
     },
-    contentType: {
-      type: String,
-      enum: contentType,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "user", // Reference to the User model
       required: true,
     },
-    endpoint: { type: Schema?.ObjectId, ref: "endpoints" },
   },
   { timestamps: true, collection: "content" }
 );
