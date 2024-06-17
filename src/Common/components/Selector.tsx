@@ -30,20 +30,31 @@ export default function Selector(props: Selector) {
   const handleChange = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    let selected = event?.currentTarget.innerText?.toLowerCase();
-    selected == Value ? (selected = "") : ""; //to unselect
-    setDataType(selected);
+    let selected = event?.currentTarget?.innerText
+      ?.split("(")
+      ?.shift()
+      ?.toLowerCase();
+    selected == Value && (selected = ""); //to unselect
+    setDataType(selected ?? "");
   };
   const selectedButtonCss = {
     backgroundColor: "black",
     color: "white",
   };
-
   return (
-    <Box sx={{ display: "flex", gap: 1, m: 1, alignItems: "center", ...sx }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: 1,
+        m: 1,
+        alignItems: "center",
+        ...sx,
+      }}
+    >
       {label && <>{label} :</>}
       {items?.map((item, index) => {
-        const Selected = item?.itemName == Value ? selectedButtonCss : {};
+        const Selected = item?.value == Value ? selectedButtonCss : {};
         return (
           <Box key={index} sx={{ position: "relative", margin: "5px" }}>
             <button
@@ -51,25 +62,28 @@ export default function Selector(props: Selector) {
                 width: "max-content",
                 padding: 6,
                 fontSize: "100%",
-                ...Selected,
                 ...buttonStyle,
+                ...Selected,
               }}
               type="button"
-              value={Value || "object"}
+              value={Value}
               onClick={handleChange}
             >
               {item?.itemName}
             </button>
-            <RemoveListItem
-              sx={{ display: displayRemoveIcon === true ? "flex" : "none" }}
-              onClick={() => {
-                if (OnRemove) {
-                  OnRemove(item);
-                }
-              }}
-            >
-              x
-            </RemoveListItem>
+
+            {displayRemoveIcon && (
+              <RemoveListItem
+                sx={{ display: "flex" }}
+                onClick={() => {
+                  if (OnRemove) {
+                    OnRemove(item);
+                  }
+                }}
+              >
+                x
+              </RemoveListItem>
+            )}
           </Box>
         );
       })}

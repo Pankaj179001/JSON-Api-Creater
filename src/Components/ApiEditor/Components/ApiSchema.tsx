@@ -1,7 +1,8 @@
 "use client";
-import FormDialog from "@/Common/Components/DialogBox";
-import SelectOptions from "@/Common/Components/SelectOptions";
-import Selector from "@/Common/Components/Selector";
+
+import FormDialog from "@/Common/components/DialogBox";
+import SelectOptions from "@/Common/components/SelectOptions";
+import Selector from "@/Common/components/Selector";
 import { CustomText } from "@/Components/StyledComponent/CustomText";
 import { Box, Button, TextField } from "@mui/material";
 import React, { useEffect } from "react";
@@ -9,7 +10,7 @@ interface IField {
   id?: string;
   name: string;
   dataType: string;
-  maxLength: string;
+  maxLength: number;
 }
 interface CardProps {
   ApiTesting: boolean;
@@ -21,12 +22,14 @@ const ApiSchema = (props: CardProps) => {
   const [SelectedValue, setSelectedValue] = React.useState(false); //set dia
 
   const [SelectedSchema, setSelectedSchema] = React.useState("");
-  const [SelectedDataType, setSelectedDataType] = React.useState("");
+  const [SelectedDataType, setSelectedDataType] = React.useState("string");
   const InitialField: IField = {
     name: ``,
     dataType: ``,
-    maxLength: ``,
+    maxLength: 5,
   };
+  const IgNoreLengthTypes = ["object", "array", "boolean"];
+
   const [Field, setField] = React.useState<IField>(InitialField);
   const [Schema, setSchema] = React.useState<Array<IField>>([]);
   const OnChangeHandler = (
@@ -42,15 +45,16 @@ const ApiSchema = (props: CardProps) => {
   useEffect(() => {
     setField((pre) => ({ ...pre, dataType: SelectedDataType }));
   }, [SelectedDataType]);
-
   useEffect(() => {
     const SelectedField = SelectedSchema?.split(/["(",")"]/).slice(0, 2);
-    const item = Schema.find(({ name }) => name == SelectedField[0]);
+    const item = Schema.find(
+      ({ name }) => name?.toLowerCase() == SelectedField[0]
+    );
     setField((pre) => ({ ...pre, ...item }));
     if (item) {
       setSelectedDataType(() => item?.dataType);
     }
-  }, [SelectedSchema]);
+  }, [Schema, SelectedSchema]);
 
   const OnSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -104,29 +108,33 @@ const ApiSchema = (props: CardProps) => {
               variant="outlined"
               size="small"
             />
-
-            <TextField
-              label="Max-length"
-              type="number"
-              name="maxLength"
-              onChange={OnChangeHandler}
-              value={Field.maxLength}
-              variant="outlined"
-              size="small"
-            />
             <Box sx={{ m: "auto" }}>
               <Selector
-                label={"Type"}
+                label={"Field Type"}
                 items={[
-                  { itemName: "string", value: "string", selected: true },
-                  { itemName: "number", value: "number", selected: false },
-                  { itemName: "object", value: "object", selected: false },
-                  { itemName: "array", value: "array", selected: false },
-                  { itemName: "boolean", value: "boolean", selected: false },
+                  { itemName: "String", value: "string", selected: true },
+                  { itemName: "Number", value: "number", selected: false },
+                  {
+                    itemName: "Array-String",
+                    value: "array-string",
+                    selected: false,
+                  },
+
+                  { itemName: "Boolean", value: "boolean", selected: false },
+                  {
+                    itemName: "Array-Numbers",
+                    value: "array-numbers",
+                    selected: false,
+                  },
+                  {
+                    itemName: "Text Area",
+                    value: "text_area",
+                    selected: false,
+                  },
                 ]}
                 setDataType={setSelectedDataType}
                 Value={SelectedDataType}
-                buttonStyle={{ padding: 4 }}
+                buttonStyle={{ padding: 3 }}
                 sx={{
                   gap: 0,
                   width: "222px",
@@ -135,17 +143,44 @@ const ApiSchema = (props: CardProps) => {
                 }}
               />
             </Box>
-
+            {!IgNoreLengthTypes?.includes(SelectedDataType) && (
+              <TextField
+                label="Max-length"
+                type="number"
+                disabled={IgNoreLengthTypes?.includes(SelectedDataType)}
+                name="maxLength"
+                onChange={OnChangeHandler}
+                value={Field.maxLength ?? 5}
+                variant="outlined"
+                size="small"
+              />
+            )}
+            {/* {SelectedDataType == "array" && (
+              <Box sx={{ m: "auto" }}>
+                <Selector
+                  label={"Select Sub Type"}
+                  items={[
+                    { itemName: "string", value: "string", selected: true },
+                    { itemName: "number", value: "number", selected: false },
+                  ]}
+                  setDataType={setSelectedDataType}
+                  Value={SelectedDataType}
+                  buttonStyle={{ padding: 4 }}
+                  sx={{
+                    gap: 0,
+                    width: "222px",
+                    display: "grid",
+                    gridTemplateColumns: "auto auto auto",
+                  }}
+                />
+              </Box>
+            )} */}
             <Button
               type="submit"
               variant="contained"
               color="primary"
               size="small"
-              disabled={
-                !Field?.name?.trim() ||
-                !Field?.dataType?.trim() ||
-                !Field?.maxLength
-              }
+              disabled={!Field?.name?.trim() || !Field?.dataType?.trim()}
             >
               Add Field
             </Button>
@@ -166,7 +201,7 @@ const ApiSchema = (props: CardProps) => {
               value: i?.name,
               selected: false,
             }))}
-            sx={{ width: ApiTesting ? "50%" : "25%", p: 0.5 }}
+            sx={{ width: "100%", p: 0.5 }}
             setDataType={setSelectedSchema}
             displayRemoveIcon={true}
             Value={SelectedSchema}
@@ -212,6 +247,19 @@ const ApiSchema = (props: CardProps) => {
           setOpen={setOpenDialog}
           heading={"Select Options"}
         >
+          <SelectOptions
+            label={"Is Array"}
+            Value={SelectedValue as unknown as string}
+            setValueState={
+              setSelectedValue as unknown as React.Dispatch<
+                React.SetStateAction<string>
+              >
+            }
+            options={[
+              { label: "false", value: false as any },
+              { label: "true", value: true as any },
+            ]}
+          />
           <TextField
             autoFocus
             required
@@ -234,10 +282,10 @@ const ApiSchema = (props: CardProps) => {
             fullWidth
             variant="standard"
           />
-          <SelectOptions
+          {/* <SelectOptions
             label={"Pagination Required"}
             Value={SelectedValue as unknown as string}
-            setValue={
+            setValueState={
               setSelectedValue as unknown as React.Dispatch<
                 React.SetStateAction<string>
               >
@@ -246,7 +294,7 @@ const ApiSchema = (props: CardProps) => {
               { label: "false", value: false as any },
               { label: "true", value: true as any },
             ]}
-          />
+          /> */}
         </FormDialog>
       ) : (
         <></>

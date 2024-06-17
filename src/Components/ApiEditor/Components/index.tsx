@@ -8,7 +8,7 @@ const Cards = () => {
   const [ApiTesting, setApiTesting] = useState(false);
 
   return (
-    <div className="cards" style={{ marginTop: "2%" }}>
+    <div className="cards" style={{ marginTop: "2%", flexWrap: "wrap" }}>
       <ApiSchema {...{ setApiTesting, ApiTesting }} />
       {ApiTesting ? <TestingCard /> : <></>}
     </div>

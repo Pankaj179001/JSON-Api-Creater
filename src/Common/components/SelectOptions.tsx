@@ -9,31 +9,38 @@ import { SxProps, Theme } from "@mui/material";
 export default function SelectOptions<T extends string | undefined>({
   label,
   Value,
-  setValue,
+  setValueState,
   options,
   variant,
   sx,
 }: {
   label: string;
   Value: T;
-  setValue: React.Dispatch<React.SetStateAction<T>>;
+  setValueState: React.Dispatch<React.SetStateAction<T>>;
   options: { label: string; value: T }[];
   sx?: SxProps<Theme> | undefined;
   variant?: "filled" | "outlined" | "standard" | undefined;
 }) {
   const handleChange = (event: SelectChangeEvent) => {
-    setValue(event.target.value as T);
+    setValueState(event.target.value as T);
   };
 
   return (
     <Box sx={{ minWidth: 120, ...sx }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">{label}</InputLabel>
+        <InputLabel
+          sx={{ mt: 1, ml: -1.8 }}
+          color="primary"
+          id="demo-simple-select-label"
+        >
+          {label}
+        </InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={Value as string}
           label={label}
+          slotProps={{ input: { color: "primary.main" } }}
           onChange={handleChange}
           variant={variant || "standard"}
         >

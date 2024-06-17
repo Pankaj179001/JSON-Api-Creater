@@ -34,7 +34,6 @@ export default function FormDialog({
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries((formData as any).entries());
-            console.log(formJson);
             handleClose();
           },
         }}
