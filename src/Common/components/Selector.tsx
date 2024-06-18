@@ -14,6 +14,10 @@ interface Selector {
   displayRemoveIcon?: boolean;
   OnRemove?: (val: unknown) => void | unknown;
   buttonStyle?: React.CSSProperties | undefined;
+  CustomHandleChange?: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | any,
+    selected: string | undefined
+  ) => void;
 }
 
 export default function Selector(props: Selector) {
@@ -26,6 +30,7 @@ export default function Selector(props: Selector) {
     OnRemove,
     displayRemoveIcon,
     buttonStyle,
+    CustomHandleChange,
   } = props;
   const handleChange = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -36,6 +41,7 @@ export default function Selector(props: Selector) {
       ?.toLowerCase();
     selected == Value && (selected = ""); //to unselect
     setDataType(selected ?? "");
+    CustomHandleChange && CustomHandleChange(event, selected);
   };
   const selectedButtonCss = {
     backgroundColor: "black",

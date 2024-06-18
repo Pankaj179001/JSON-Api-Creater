@@ -12,17 +12,24 @@ export default function FormDialog({
   open,
   setOpen,
   children,
-}: {
+  onSubmit,
+  buttonDisabled,
+}: // FormUseEffect,
+{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   heading: string;
   description?: string;
   children: React.ReactNode;
+  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
+  buttonDisabled?: boolean;
+  // FormUseEffect?: { condition: () => boolean; cb: () => any };
 }) {
   const handleClose = () => {
     setOpen(false);
   };
 
+  // React.useEffect(() => {});
   return (
     <React.Fragment>
       <Dialog
@@ -32,8 +39,9 @@ export default function FormDialog({
           component: "form",
           onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries((formData as any).entries());
+            // const formData = new FormData(event.currentTarget);
+            // const formJson = Object.fromEntries((formData as any).entries());
+            onSubmit && onSubmit(event);
             handleClose();
           },
         }}
@@ -45,7 +53,9 @@ export default function FormDialog({
         </DialogContent>
         <DialogActions>
           <button onClick={handleClose}>Cancel</button>
-          <button type="submit">Submit</button>
+          <button disabled={buttonDisabled ?? false} type="submit">
+            Submit
+          </button>
         </DialogActions>
       </Dialog>
     </React.Fragment>

@@ -13,16 +13,24 @@ export default function SelectOptions<T extends string | undefined>({
   options,
   variant,
   sx,
+  name,
+  CustomHandleChange,
 }: {
   label: string;
+  name?: string;
   Value: T;
   setValueState: React.Dispatch<React.SetStateAction<T>>;
   options: { label: string; value: T }[];
   sx?: SxProps<Theme> | undefined;
   variant?: "filled" | "outlined" | "standard" | undefined;
+  CustomHandleChange?: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | any,
+    selected: any
+  ) => void;
 }) {
   const handleChange = (event: SelectChangeEvent) => {
     setValueState(event.target.value as T);
+    CustomHandleChange && CustomHandleChange(event, event.target.value);
   };
 
   return (
@@ -39,6 +47,7 @@ export default function SelectOptions<T extends string | undefined>({
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={Value as string}
+          name={name}
           label={label}
           slotProps={{ input: { color: "primary.main" } }}
           onChange={handleChange}

@@ -4,8 +4,18 @@ import FormDialog from "@/Common/components/DialogBox";
 import SelectOptions from "@/Common/components/SelectOptions";
 import Selector from "@/Common/components/Selector";
 import { CustomText } from "@/Components/StyledComponent/CustomText";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, TextField } from "@mui/material";
 import React, { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import CustomFieldSchema from "../Yup/CustomFieldSchema";
+import CustomApiSchema from "../Yup/CustomApiSchema";
+const ErrorStyle = {
+  color: "red",
+  fontSize: "small",
+  marginTop: "-10px",
+  maxHeight: "4px",
+};
 interface IField {
   id?: string;
   name: string;
@@ -16,62 +26,98 @@ interface CardProps {
   ApiTesting: boolean;
   setApiTesting: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const ApiSchema = (props: CardProps) => {
-  const { ApiTesting, setApiTesting } = props;
-  const [OpenDialog, setOpenDialog] = React.useState(false);
-  const [SelectedValue, setSelectedValue] = React.useState(false); //set dia
 
+const ApiSchema = (props: CardProps) => {
+  //------props-------
+  const { ApiTesting, setApiTesting } = props;
+
+  //-----yup use form for custom field form---
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isDirty, isValid },
+    setValue,
+    reset,
+  } = useForm({
+    resolver: yupResolver(CustomFieldSchema),
+    defaultValues: { maxLength: 5, dataType: "string" },
+    mode: "onChange",
+  });
+
+  //-----yup use form for custom Api create form---
+  const {
+    handleSubmit: CustomApiSubmit,
+    control: CustomApiControl,
+    formState: {
+      errors: CustomApiError,
+      isDirty: isCustomApiDirty,
+      isValid: IsCustomApiValid,
+    },
+    setValue: SetApiValue,
+    reset: CustomApiReset,
+    watch,
+  } = useForm({
+    resolver: yupResolver(CustomApiSchema),
+    mode: "onChange",
+  });
+  const IsArrayField = watch("is_array");
+  //-----------states--------------
+  const [OpenDialog, setOpenDialog] = React.useState(false);
+  const [IsArray, setIsArray] = React.useState(false);
+  const [Pagination, setPagination] = React.useState(false);
   const [SelectedSchema, setSelectedSchema] = React.useState("");
   const [SelectedDataType, setSelectedDataType] = React.useState("string");
-  const InitialField: IField = {
-    name: ``,
-    dataType: ``,
-    maxLength: 5,
-  };
+  const [Schema, setSchema] = React.useState<Array<IField>>([]);
+
   const IgNoreLengthTypes = ["object", "array", "boolean"];
 
-  const [Field, setField] = React.useState<IField>(InitialField);
-  const [Schema, setSchema] = React.useState<Array<IField>>([]);
-  const OnChangeHandler = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setField((pre) => ({
-      ...pre,
-      [name]: value?.split(" ").join("_"),
-    }));
-  };
-
+  //------use effects----
   useEffect(() => {
-    setField((pre) => ({ ...pre, dataType: SelectedDataType }));
-  }, [SelectedDataType]);
+    setValue("dataType", SelectedDataType);
+  }, [SelectedDataType, setValue]);
+
   useEffect(() => {
     const SelectedField = SelectedSchema?.split(/["(",")"]/).slice(0, 2);
-    const item = Schema.find(
+    const Existingitem = Schema.find(
       ({ name }) => name?.toLowerCase() == SelectedField[0]
     );
-    setField((pre) => ({ ...pre, ...item }));
-    if (item) {
-      setSelectedDataType(() => item?.dataType);
+    if (Existingitem) {
+      setValue("name", Existingitem?.name);
+      setValue("maxLength", Existingitem?.maxLength);
+      setSelectedDataType(() => Existingitem?.dataType);
     }
-  }, [Schema, SelectedSchema]);
+  }, [Schema, SelectedSchema, setValue]);
 
-  const OnSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  //---use effect for custom api---
+  useEffect(() => {
+    if (!IsArrayField) {
+      SetApiValue("pagination", false);
+      SetApiValue("recordsToCreate", 1);
+    }
+  }, [IsArrayField, SetApiValue]);
+
+  //-------submit handler------
+  const OnSubmitHandler = (data: any) => {
     setSchema((prev) => {
-      const IsKeyRepeated = Schema.findIndex(
-        ({ name }) => name === Field?.name
-      );
+      const IsKeyRepeated = Schema.findIndex(({ name }) => name === data?.name);
       if (IsKeyRepeated !== -1) {
         const PrevData = [...prev];
-        PrevData[IsKeyRepeated] = Object.assign(PrevData[IsKeyRepeated], Field);
+        PrevData[IsKeyRepeated] = Object.assign(PrevData[IsKeyRepeated], data);
         return PrevData;
       } else {
-        return [...prev, { ...Field }];
+        return [...prev, { ...data }];
       }
     });
-    setField(() => InitialField);
-    setSelectedDataType(() => ``);
+    setSelectedDataType(() => `string`);
+    reset({ maxLength: 5, dataType: SelectedDataType });
+  };
+
+  const OnCustomApiSubmit = (data: any) => {
+    console.log("data");
+    console.log({ data }, "data");
+    setIsArray(() => false);
+    setPagination(() => false);
+    CustomApiReset();
   };
   return (
     <Box className="card1" gap={1}>
@@ -90,50 +136,61 @@ const ApiSchema = (props: CardProps) => {
           flexDirection: { xs: "column", md: "row" },
         }}
       >
-        <form style={{ width: "45%" }} onSubmit={OnSubmitHandler}>
+        <form style={{ width: "45%" }} onSubmit={handleSubmit(OnSubmitHandler)}>
           <Box
             sx={{
               display: "flex",
               flexWrap: "wrap",
-              gap: 2,
+              gap: 1.5,
               flexFlow: "column",
               alignItems: "center",
             }}
           >
-            <TextField
-              label="Field Name"
+            <Controller
+              control={control}
               name="name"
-              value={Field.name}
-              onChange={OnChangeHandler}
-              variant="outlined"
-              size="small"
+              render={({ field: { onChange, onBlur, value, ref } }) => (
+                <>
+                  <TextField
+                    onChange={onChange} // send value to hook form
+                    onBlur={onBlur} // notify when input is touched
+                    label="Field Name"
+                    value={value?.split(" ").join("_")}
+                    variant="outlined"
+                    InputLabelProps={{ shrink: true }}
+                    size="small"
+                    ref={ref}
+                  />
+                  {errors?.name?.message && (
+                    <span style={ErrorStyle}>{errors?.name.message}</span>
+                  )}
+                </>
+              )}
             />
+
             <Box sx={{ m: "auto" }}>
               <Selector
                 label={"Field Type"}
                 items={[
-                  { itemName: "String", value: "string", selected: true },
-                  { itemName: "Number", value: "number", selected: false },
+                  { itemName: "String", value: "string" },
+                  { itemName: "Number", value: "number" },
                   {
                     itemName: "Array-String",
                     value: "array-string",
-                    selected: false,
                   },
 
-                  { itemName: "Boolean", value: "boolean", selected: false },
+                  { itemName: "Boolean", value: "boolean" },
                   {
                     itemName: "Array-Numbers",
                     value: "array-numbers",
-                    selected: false,
                   },
                   {
-                    itemName: "Text Area",
-                    value: "text_area",
-                    selected: false,
+                    itemName: "Text-Area",
+                    value: "text-area",
                   },
                 ]}
                 setDataType={setSelectedDataType}
-                Value={SelectedDataType}
+                Value={SelectedDataType || "string"}
                 buttonStyle={{ padding: 3 }}
                 sx={{
                   gap: 0,
@@ -141,46 +198,49 @@ const ApiSchema = (props: CardProps) => {
                   display: "grid",
                   gridTemplateColumns: "auto auto auto",
                 }}
+                CustomHandleChange={(_, selected) =>
+                  setValue("dataType", selected ?? "string")
+                }
               />
+              {errors?.dataType?.message && (
+                <span style={ErrorStyle}>{errors?.dataType.message}</span>
+              )}
             </Box>
             {!IgNoreLengthTypes?.includes(SelectedDataType) && (
-              <TextField
-                label="Max-length"
-                type="number"
-                disabled={IgNoreLengthTypes?.includes(SelectedDataType)}
+              <Controller
+                control={control}
                 name="maxLength"
-                onChange={OnChangeHandler}
-                value={Field.maxLength ?? 5}
-                variant="outlined"
-                size="small"
+                render={({ field: { onChange, onBlur, value, ref } }) => (
+                  <>
+                    <TextField
+                      label="Max-length"
+                      onChange={onChange} // send value to hook form
+                      onBlur={onBlur} // notify when input is touched
+                      type="number"
+                      disabled={IgNoreLengthTypes?.includes(SelectedDataType)}
+                      value={value}
+                      InputLabelProps={{ shrink: true }}
+                      variant="outlined"
+                      size="small"
+                      ref={ref}
+                    />
+                    {errors?.maxLength?.message && (
+                      <span style={ErrorStyle}>
+                        {errors?.maxLength?.message}
+                      </span>
+                    )}
+                  </>
+                )}
               />
             )}
-            {/* {SelectedDataType == "array" && (
-              <Box sx={{ m: "auto" }}>
-                <Selector
-                  label={"Select Sub Type"}
-                  items={[
-                    { itemName: "string", value: "string", selected: true },
-                    { itemName: "number", value: "number", selected: false },
-                  ]}
-                  setDataType={setSelectedDataType}
-                  Value={SelectedDataType}
-                  buttonStyle={{ padding: 4 }}
-                  sx={{
-                    gap: 0,
-                    width: "222px",
-                    display: "grid",
-                    gridTemplateColumns: "auto auto auto",
-                  }}
-                />
-              </Box>
-            )} */}
+
             <Button
               type="submit"
               variant="contained"
               color="primary"
               size="small"
-              disabled={!Field?.name?.trim() || !Field?.dataType?.trim()}
+              disabled={!isDirty || !isValid}
+              // disabled={!Field?.name?.trim() || !Field?.dataType?.trim()}
             >
               Add Field
             </Button>
@@ -246,55 +306,91 @@ const ApiSchema = (props: CardProps) => {
           open={OpenDialog}
           setOpen={setOpenDialog}
           heading={"Select Options"}
+          onSubmit={CustomApiSubmit(OnCustomApiSubmit)}
+          buttonDisabled={!isCustomApiDirty || !IsCustomApiValid}
         >
           <SelectOptions
+            name="is_array"
             label={"Is Array"}
-            Value={SelectedValue as unknown as string}
+            Value={IsArray as unknown as string}
             setValueState={
-              setSelectedValue as unknown as React.Dispatch<
+              setIsArray as unknown as React.Dispatch<
                 React.SetStateAction<string>
               >
             }
+            CustomHandleChange={(_, selected) =>
+              SetApiValue("is_array", selected ?? false)
+            }
             options={[
-              { label: "false", value: false as any },
-              { label: "true", value: true as any },
+              { label: "No", value: false as any },
+              { label: "Yes", value: true as any },
             ]}
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="recordsToCreate"
-            name="recordsToCreate"
-            label="Number of records to Create"
-            type="number"
-            fullWidth
-            variant="standard"
           />{" "}
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="recordsToCreate"
-            name="recordsToCreate"
-            label="Number of records to Create"
-            type="number"
-            fullWidth
-            variant="standard"
-          />
-          {/* <SelectOptions
-            label={"Pagination Required"}
-            Value={SelectedValue as unknown as string}
-            setValueState={
-              setSelectedValue as unknown as React.Dispatch<
-                React.SetStateAction<string>
-              >
-            }
-            options={[
-              { label: "false", value: false as any },
-              { label: "true", value: true as any },
-            ]}
-          /> */}
+          {CustomApiError?.is_array?.message && (
+            <span style={ErrorStyle}>{CustomApiError?.is_array.message}</span>
+          )}
+          {IsArray && (
+            <>
+              <SelectOptions
+                name="pagination"
+                label={"Pagination required"}
+                Value={Pagination as unknown as string}
+                setValueState={
+                  setPagination as unknown as React.Dispatch<
+                    React.SetStateAction<string>
+                  >
+                }
+                CustomHandleChange={(_, selected) =>
+                  SetApiValue("pagination", selected ?? false)
+                }
+                options={[
+                  { label: "No", value: false as any },
+                  { label: "Yes", value: true as any },
+                ]}
+              />
+              {CustomApiError?.pagination?.message && (
+                <span style={ErrorStyle}>
+                  {CustomApiError?.pagination.message}
+                </span>
+              )}
+            </>
+          )}
+          {IsArray && (
+            <>
+              <Controller
+                control={CustomApiControl}
+                name="recordsToCreate"
+                render={({ field: { onChange, onBlur, value, ref } }) => (
+                  <>
+                    <TextField
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      ref={ref}
+                      value={value}
+                      autoFocus
+                      required
+                      margin="dense"
+                      id="recordsToCreate"
+                      name="recordsToCreate"
+                      label="Number of records to Create"
+                      type="number"
+                      fullWidth
+                      variant="standard"
+                    />
+                    {errors?.name?.message && (
+                      <span style={ErrorStyle}>{errors?.name.message}</span>
+                    )}
+                  </>
+                )}
+              />
+
+              {CustomApiError?.recordsToCreate?.message && (
+                <span style={ErrorStyle}>
+                  {CustomApiError?.recordsToCreate.message}
+                </span>
+              )}
+            </>
+          )}
         </FormDialog>
       ) : (
         <></>
