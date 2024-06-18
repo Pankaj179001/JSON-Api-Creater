@@ -6,12 +6,13 @@ const nextConfig = {
   env: {
     MONGO_URI: process.env.MONGO_URI,
     BASE_URL: process.env.BASE_URL,
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+    NEXT_PUBLIC_VERCEL_URL: process.env.NEXT_PUBLIC_VERCEL_URL,
   },
   experimental: {
     esmExternals: "loose",
     serverComponentsExternalPackages: ["mongoose"],
   },
- 
 };
 
 module.exports = nextConfig;

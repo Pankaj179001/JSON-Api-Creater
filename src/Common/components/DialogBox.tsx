@@ -18,6 +18,7 @@ export default function FormDialog({
 {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleSubmit?: (data: any) => void;
   heading: string;
   description?: string;
   children: React.ReactNode;

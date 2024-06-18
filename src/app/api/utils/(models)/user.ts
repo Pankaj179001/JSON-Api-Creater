@@ -11,7 +11,6 @@ const UserSchema = new Schema(
       default: true,
       required: false,
     },
-    endpoints: [{ type: Schema?.ObjectId, ref: "endpoints" }],
   },
   { timestamps: true, collection: "user" }
 );

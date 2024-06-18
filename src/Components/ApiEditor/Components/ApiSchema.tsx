@@ -130,9 +130,10 @@ const ApiSchema = (props: CardProps) => {
           m: "auto",
           width: "100%",
           mt: 5,
-          gap: 1,
+          gap: 2,
           p: 2,
           height: "100%",
+          boxShadow: "inset 0 -2em 3em rgb(95 117 95 / 30%)",
           flexDirection: { xs: "column", md: "row" },
         }}
       >
@@ -144,6 +145,8 @@ const ApiSchema = (props: CardProps) => {
               gap: 1.5,
               flexFlow: "column",
               alignItems: "center",
+              py: 3,
+              textAlign: "center",
             }}
           >
             <Controller
@@ -251,7 +254,7 @@ const ApiSchema = (props: CardProps) => {
             width: "100%",
             height: "100%",
             // border: "2px solid black",
-            minHeight: "200px",
+            borderRadius: "10px",
           }}
         >
           <Selector
