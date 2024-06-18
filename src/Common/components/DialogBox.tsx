@@ -14,8 +14,7 @@ export default function FormDialog({
   children,
   onSubmit,
   buttonDisabled,
-}: // FormUseEffect,
-{
+}: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleSubmit?: (data: any) => void;
@@ -24,13 +23,11 @@ export default function FormDialog({
   children: React.ReactNode;
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   buttonDisabled?: boolean;
-  // FormUseEffect?: { condition: () => boolean; cb: () => any };
 }) {
   const handleClose = () => {
     setOpen(false);
   };
 
-  // React.useEffect(() => {});
   return (
     <React.Fragment>
       <Dialog
