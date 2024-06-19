@@ -1,4 +1,5 @@
 "use client";
+import { SxProps } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -15,6 +16,7 @@ export default function FormDialog({
   onSubmit,
   buttonDisabled,
   onClose,
+  sx,
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,6 +27,7 @@ export default function FormDialog({
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   buttonDisabled?: boolean;
   onClose?: () => void;
+  sx?: SxProps;
 }) {
   const handleClose = () => {
     onClose && onClose();
@@ -36,12 +39,11 @@ export default function FormDialog({
       <Dialog
         open={open}
         onClose={handleClose}
+        sx={sx}
         PaperProps={{
           component: "form",
           onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
-            // const formData = new FormData(event.currentTarget);
-            // const formJson = Object.fromEntries((formData as any).entries());
             onSubmit && onSubmit(event);
             handleClose();
           },

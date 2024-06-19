@@ -23,7 +23,6 @@ const CustomFieldSchema = Yup.object().shape({
         "text-area": [20, 150],
       } as Record<string, [number, number]>;
       const [Min, Max] = MaxLength[(dataType as string) ?? "string"] ?? [];
-      console.log({ Min, Max, dataType });
       const IgnorLength = Yup.number()
         .typeError("Max Length is required")
         .required("Max Length is required")

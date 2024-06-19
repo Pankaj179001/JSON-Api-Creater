@@ -10,6 +10,7 @@ import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import CustomFieldSchema from "../Yup/CustomFieldSchema";
 import CustomApiSchema from "../Yup/CustomApiSchema";
+import ApiCreateDialog from "./ApiCreateDialog";
 const ErrorStyle = {
   color: "red",
   fontSize: "small",
@@ -44,39 +45,18 @@ const ApiSchema = (props: CardProps) => {
     mode: "onChange",
   });
 
-  //-----yup use form for custom Api create form---
-  const {
-    handleSubmit: CustomApiSubmit,
-    control: CustomApiControl,
-    formState: {
-      errors: CustomApiError,
-      // isDirty: isCustomApiDirty,
-      isValid: IsCustomApiValid,
-    },
-    setValue: SetApiValue,
-    reset: CustomApiReset,
-    getValues,
-    watch,
-  } = useForm({
-    resolver: yupResolver(CustomApiSchema),
-    defaultValues: { is_array: false, pagination: false, recordsToCreate: 1 },
-    mode: "onChange",
-  });
-  const IsArrayField = watch("is_array");
   //-----------states--------------
   const [OpenDialog, setOpenDialog] = React.useState(false);
-  const [IsArray, setIsArray] = React.useState(false);
-  const [Pagination, setPagination] = React.useState(false);
   const [SelectedSchema, setSelectedSchema] = React.useState("");
   const [SelectedDataType, setSelectedDataType] = React.useState("string");
   const [Schema, setSchema] = React.useState<Array<IField>>([]);
 
   const IgNoreLengthTypes = ["object", "array", "boolean"];
 
-  //------use effects----
-  useEffect(() => {
-    setValue("dataType", SelectedDataType);
-  }, [SelectedDataType, setValue]);
+  // //------use effects----
+  // useEffect(() => {
+  //   setValue("dataType", SelectedDataType);
+  // }, [SelectedDataType, setValue]);
 
   useEffect(() => {
     const SelectedField = SelectedSchema?.split(/["(",")"]/).slice(0, 2);
@@ -89,14 +69,6 @@ const ApiSchema = (props: CardProps) => {
       setSelectedDataType(() => Existingitem?.dataType);
     }
   }, [Schema, SelectedSchema, setValue]);
-
-  //---use effect for custom api---
-  useEffect(() => {
-    if (!IsArrayField) {
-      SetApiValue("pagination", false);
-      SetApiValue("recordsToCreate", 1);
-    }
-  }, [IsArrayField, SetApiValue]);
 
   //-------submit handler------
   const OnSubmitHandler = (data: any) => {
@@ -114,12 +86,6 @@ const ApiSchema = (props: CardProps) => {
     reset({ maxLength: 5, dataType: SelectedDataType, name: "" });
   };
 
-  const OnCustomApiSubmit = (data: any) => {
-    console.log({ data }, "data");
-    setIsArray(() => false);
-    setPagination(() => false);
-    CustomApiReset({ is_array: false, pagination: false, recordsToCreate: 1 });
-  };
   return (
     <Box className="card1" gap={1}>
       <CustomText variant="h4">Free API Editor</CustomText>
@@ -200,6 +166,7 @@ const ApiSchema = (props: CardProps) => {
                   width: "222px",
                   display: "grid",
                   gridTemplateColumns: "auto auto auto",
+                  textAlign: "start",
                 }}
                 CustomHandleChange={(_, selected) =>
                   setValue("dataType", selected ?? "string")
@@ -304,100 +271,11 @@ const ApiSchema = (props: CardProps) => {
           </label>
         </div>
       </div>
-      {OpenDialog ? (
-        <FormDialog
-          open={OpenDialog}
-          setOpen={setOpenDialog}
-          heading={"Select Options"}
-          onSubmit={CustomApiSubmit(OnCustomApiSubmit)}
-          buttonDisabled={false}
-          onClose={() => CustomApiReset()}
-        >
-          <SelectOptions
-            name="is_array"
-            label={"Is Array"}
-            Value={IsArray as unknown as string}
-            setValueState={
-              setIsArray as unknown as React.Dispatch<
-                React.SetStateAction<string>
-              >
-            }
-            CustomHandleChange={(_, selected) =>
-              SetApiValue("is_array", selected ?? false)
-            }
-            options={[
-              { label: "No", value: false as any },
-              { label: "Yes", value: true as any },
-            ]}
-          />{" "}
-          {CustomApiError?.is_array?.message && (
-            <span style={ErrorStyle}>{CustomApiError?.is_array.message}</span>
-          )}
-          {IsArray && (
-            <>
-              <SelectOptions
-                name="pagination"
-                label={"Pagination required"}
-                Value={Pagination as unknown as string}
-                setValueState={
-                  setPagination as unknown as React.Dispatch<
-                    React.SetStateAction<string>
-                  >
-                }
-                CustomHandleChange={(_, selected) =>
-                  SetApiValue("pagination", selected ?? false)
-                }
-                options={[
-                  { label: "No", value: false as any },
-                  { label: "Yes", value: true as any },
-                ]}
-              />
-              {CustomApiError?.pagination?.message && (
-                <span style={ErrorStyle}>
-                  {CustomApiError?.pagination.message}
-                </span>
-              )}
-            </>
-          )}
-          {IsArray && (
-            <>
-              <Controller
-                control={CustomApiControl}
-                name="recordsToCreate"
-                render={({ field: { onChange, onBlur, value, ref } }) => (
-                  <>
-                    <TextField
-                      onChange={onChange}
-                      onBlur={onBlur}
-                      ref={ref}
-                      value={value}
-                      autoFocus
-                      required
-                      margin="dense"
-                      id="recordsToCreate"
-                      name="recordsToCreate"
-                      label="Number of records to Create"
-                      type="number"
-                      fullWidth
-                      variant="standard"
-                    />
-                    {errors?.name?.message && (
-                      <span style={ErrorStyle}>{errors?.name.message}</span>
-                    )}
-                  </>
-                )}
-              />
-
-              {CustomApiError?.recordsToCreate?.message && (
-                <span style={ErrorStyle}>
-                  {CustomApiError?.recordsToCreate.message}
-                </span>
-              )}
-            </>
-          )}
-        </FormDialog>
-      ) : (
-        <></>
+      {OpenDialog && (
+        <ApiCreateDialog
+          OpenDialog={OpenDialog}
+          setOpenDialog={setOpenDialog}
+        />
       )}
     </Box>
   );

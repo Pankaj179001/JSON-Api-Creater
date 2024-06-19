@@ -35,13 +35,11 @@ export default function Selector(props: Selector) {
   const handleChange = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    let selected = event?.currentTarget?.innerText
-      ?.split("(")
-      ?.shift()
-      ?.toLowerCase();
-    selected == Value && (selected = ""); //to unselect
-    setDataType(selected ?? "");
+    const text = event?.currentTarget?.innerText;
+    let selected = text?.split("(")?.shift()?.toLowerCase();
     CustomHandleChange && CustomHandleChange(event, selected);
+    selected == Value && (selected = ""); //to unselect
+    setDataType(selected ?? "string");
   };
   const selectedButtonCss = {
     backgroundColor: "black",
