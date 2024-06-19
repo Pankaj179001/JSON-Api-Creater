@@ -14,6 +14,7 @@ export default function FormDialog({
   children,
   onSubmit,
   buttonDisabled,
+  onClose,
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,8 +24,10 @@ export default function FormDialog({
   children: React.ReactNode;
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   buttonDisabled?: boolean;
+  onClose?: () => void;
 }) {
   const handleClose = () => {
+    onClose && onClose();
     setOpen(false);
   };
 

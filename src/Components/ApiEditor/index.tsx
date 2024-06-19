@@ -1,4 +1,4 @@
-import Cards from "./Components";
+import SchemaAndTesting from "./Components";
 
 const FormSection = () => {
   return (
@@ -23,7 +23,7 @@ const FormSection = () => {
         response body below and press Create API to get your custom API URL
       </p>
 
-      <Cards />
+      <SchemaAndTesting />
     </div>
   );
 };

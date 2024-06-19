@@ -15,8 +15,8 @@ const Required = (schema: RqdSchema, name: string) => {
 const CustomApiSchema = Yup.object().shape({
   is_array: Required(Yup.boolean(), "Is Array"),
   recordsToCreate: Yup.number().when("is_array", ([is_array], schema) => {
-    const reqd = Required(Yup.number(), "Record to Create");
-    const Optional = Yup.number().nullable();
+    const reqd = Required(schema.min(1), "Record to Create");
+    const Optional = schema.min(1).typeError("invalid value").nullable();
     return is_array ? reqd : Optional;
   }),
   pagination: Yup.boolean().when("is_array", ([is_array], schema) => {

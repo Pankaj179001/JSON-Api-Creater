@@ -50,14 +50,16 @@ const ApiSchema = (props: CardProps) => {
     control: CustomApiControl,
     formState: {
       errors: CustomApiError,
-      isDirty: isCustomApiDirty,
+      // isDirty: isCustomApiDirty,
       isValid: IsCustomApiValid,
     },
     setValue: SetApiValue,
     reset: CustomApiReset,
+    getValues,
     watch,
   } = useForm({
     resolver: yupResolver(CustomApiSchema),
+    defaultValues: { is_array: false, pagination: false, recordsToCreate: 1 },
     mode: "onChange",
   });
   const IsArrayField = watch("is_array");
@@ -109,15 +111,14 @@ const ApiSchema = (props: CardProps) => {
       }
     });
     setSelectedDataType(() => `string`);
-    reset({ maxLength: 5, dataType: SelectedDataType });
+    reset({ maxLength: 5, dataType: SelectedDataType, name: "" });
   };
 
   const OnCustomApiSubmit = (data: any) => {
-    console.log("data");
     console.log({ data }, "data");
     setIsArray(() => false);
     setPagination(() => false);
-    CustomApiReset();
+    CustomApiReset({ is_array: false, pagination: false, recordsToCreate: 1 });
   };
   return (
     <Box className="card1" gap={1}>
@@ -133,7 +134,6 @@ const ApiSchema = (props: CardProps) => {
           gap: 2,
           p: 2,
           height: "100%",
-          boxShadow: "inset 0 -2em 3em rgb(95 117 95 / 30%)",
           flexDirection: { xs: "column", md: "row" },
         }}
       >
@@ -310,7 +310,8 @@ const ApiSchema = (props: CardProps) => {
           setOpen={setOpenDialog}
           heading={"Select Options"}
           onSubmit={CustomApiSubmit(OnCustomApiSubmit)}
-          buttonDisabled={!isCustomApiDirty || !IsCustomApiValid}
+          buttonDisabled={false}
+          onClose={() => CustomApiReset()}
         >
           <SelectOptions
             name="is_array"

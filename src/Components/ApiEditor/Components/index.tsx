@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import "../Styles/card.css";
 import ApiSchema from "./ApiSchema";
 import TestingCard from "./TestingCard";
-const Cards = () => {
+const SchemaAndTesting = () => {
   const [ApiTesting, setApiTesting] = useState(false);
 
   return (
@@ -15,4 +15,4 @@ const Cards = () => {
   );
 };
 
-export default Cards;
+export default SchemaAndTesting;
