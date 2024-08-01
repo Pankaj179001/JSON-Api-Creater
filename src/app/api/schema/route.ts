@@ -1,16 +1,14 @@
 import { faker } from "@faker-js/faker";
-import { NextResponse } from "next/server";
-import { UserModel } from "../utils/(models)";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const { data } = await req?.json();
-    console.log(data, "data", req?.url);
-    const { json } = NextResponse;
-    return json(
+    const data = await req?.json();
+
+    return NextResponse.json(
       {
         message: "success",
-        data,
+        data: data?.data,
       },
       { status: 201 }
     );
@@ -18,7 +16,20 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "server error" }, { status: 500 });
   }
 }
-
+export async function GET(req: NextRequest) {
+  try {
+    return NextResponse.json(
+      {
+        message: "success",
+        data: "data --------",
+      },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ error: "server error" }, { status: 500 });
+  }
+}
 export function ReturnSampleArray(size = 5) {
   const array = Array.from(new Array(size), (d, index) => {
     return {

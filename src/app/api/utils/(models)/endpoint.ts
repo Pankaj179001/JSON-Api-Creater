@@ -20,14 +20,16 @@ const EndpointSchema = new Schema(
       required: false,
       default: false,
     },
-    endpointType: {
-      type: String,
-      enum: endpointType,
-      default: endpointType?.CUSTOM,
-      required: true,
+    isDefault: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
-    user: { type: Schema?.ObjectId, ref: "user" },
-    content: { type: Schema?.ObjectId, ref: "content" },
+    data: {
+      type: String,
+      required: [true, "please enter the value for data"],
+    },
+    user: { type: Schema?.ObjectId, ref: "user", required: true },
   },
   { timestamps: true, collection: "endpoints" }
 );

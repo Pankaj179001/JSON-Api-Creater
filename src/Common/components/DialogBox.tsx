@@ -13,6 +13,7 @@ export default function FormDialog({
   setOpen,
   children,
   handleSubmit,
+  closeOnSubmit,
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -20,6 +21,7 @@ export default function FormDialog({
   heading: string;
   description?: string;
   children: React.ReactNode;
+  closeOnSubmit?: boolean;
 }) {
   const handleClose = () => {
     setOpen(false);
@@ -30,15 +32,14 @@ export default function FormDialog({
       <Dialog
         open={open}
         onClose={handleClose}
-        PaperProps={{
+          PaperProps={{
           component: "form",
           onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries((formData as any).entries());
-            console.log(formJson);
             handleSubmit && handleSubmit(formJson);
-            handleClose();
+            closeOnSubmit && handleClose();
           },
         }}
       >

@@ -13,6 +13,7 @@ export default function SelectOptions<T extends string | undefined>({
   options,
   variant,
   sx,
+  name,
 }: {
   label: string;
   Value: T;
@@ -20,6 +21,7 @@ export default function SelectOptions<T extends string | undefined>({
   options: { label: string; value: T }[];
   sx?: SxProps<Theme> | undefined;
   variant?: "filled" | "outlined" | "standard" | undefined;
+  name?: string;
 }) {
   const handleChange = (event: SelectChangeEvent) => {
     setValue(event.target.value as T);
@@ -34,6 +36,7 @@ export default function SelectOptions<T extends string | undefined>({
           id="demo-simple-select"
           value={Value as string}
           label={label}
+          name={name}
           onChange={handleChange}
           variant={variant || "standard"}
         >

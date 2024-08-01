@@ -3,12 +3,12 @@
 import FormDialog from "@/Common/components/DialogBox";
 import SelectOptions from "@/Common/components/SelectOptions";
 import Selector from "@/Common/components/Selector";
-import { CustomText } from "@/Components/StyledComponent/CustomText";
+import { CustomText } from "@/View/Components/StyledComponent/CustomText";
 import { useAppDispatch } from "@/feature/Hooks";
 import { createApiRecords } from "@/feature/Slices/CreateApiSlice";
 import { Box, Button, TextField } from "@mui/material";
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 interface IField {
   id?: string;
   name: string;
@@ -26,6 +26,7 @@ const ApiSchema = (props: CardProps) => {
   const dispatch = useAppDispatch();
   const [SelectedSchema, setSelectedSchema] = React.useState("");
   const [SelectedDataType, setSelectedDataType] = React.useState("");
+
   const InitialField: IField = {
     name: ``,
     dataType: ``,
@@ -201,7 +202,9 @@ const ApiSchema = (props: CardProps) => {
           onClick={() => {
             Schema?.length
               ? setOpenDialog((pre) => !pre)
-              : window.alert("please select atleast one field to create api");
+              : toast.error(
+                  "please select atleast one schema field to create api"
+                );
           }}
           type="button"
         >
@@ -229,12 +232,22 @@ const ApiSchema = (props: CardProps) => {
           setOpen={setOpenDialog}
           heading={"Select Options"}
           handleSubmit={(body) => {
-            dispatch(
-              createApiRecords({
-                data: Schema,
-                config: { ...body, pagination: SelectedValue },
-              })
-            );
+            const records = +body?.recordsToCreate;
+            const paginate = body?.pagination;
+            body["recordsToCreate"] = !isNaN(records) ? records : 0;
+            body["pagination"] = Boolean(paginate)
+              ? JSON.parse(paginate)
+              : false;
+            if (records > 50) {
+              toast.error("Maximum limit of records to create is 50");
+            } else {
+              dispatch(
+                createApiRecords({
+                  data: Schema,
+                  config: { ...body, pagination: SelectedValue },
+                })
+              ).then(() => setOpenDialog(!OpenDialog));
+            }
           }}
         >
           <TextField
@@ -247,18 +260,9 @@ const ApiSchema = (props: CardProps) => {
             type="number"
             fullWidth
             variant="standard"
-          />{" "}
-          {/* <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="recordsToCreate"
-            name="recordsToCreate"
-            label="Number of records to Create"
-            type="number"
-            fullWidth
-            variant="standard"
-          /> */}
+            sx={{ p: 0 }}
+          />
+
           <SelectOptions
             label={"Pagination Required"}
             Value={SelectedValue as unknown as string}
@@ -267,6 +271,7 @@ const ApiSchema = (props: CardProps) => {
                 React.SetStateAction<string>
               >
             }
+            name="pagination"
             options={[
               { label: "false", value: false as any },
               { label: "true", value: true as any },

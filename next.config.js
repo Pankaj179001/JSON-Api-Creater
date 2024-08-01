@@ -13,6 +13,7 @@ const nextConfig = {
     esmExternals: "loose",
     serverComponentsExternalPackages: ["mongoose"],
   },
+  headers: [{}],
 };
 
 module.exports = nextConfig;

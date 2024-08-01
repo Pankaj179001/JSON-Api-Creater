@@ -1,5 +1,6 @@
-import { FormSection } from "@/Components/ApiEditor";
-import ReadyToUse from "@/Components/ReadyToUseUrl";
+import { FormSection } from "@/View/Components/ApiEditor";
+import ReadyToUse from "@/View/Components/ReadyToUseUrl";
+import { Bounce, ToastContainer } from "react-toastify";
 
 export default function Home() {
   return (
@@ -21,6 +22,15 @@ export default function Home() {
         <FormSection />
         <ReadyToUse />
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </main>
   );
 }

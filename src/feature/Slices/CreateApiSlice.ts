@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { BaseUrl } from "../BaseUrl";
+import { toast } from "react-toastify";
 
 export const createApiRecords = createAsyncThunk(
   "records/createApi",
   async (requestData: { data: any[]; config: any }, thunkAPI) => {
     try {
-      console.log({requestData});
       const response = await fetch(`${BaseUrl}/schema`, {
         method: "POST",
         headers: {
@@ -13,7 +13,6 @@ export const createApiRecords = createAsyncThunk(
         },
         body: JSON.stringify(requestData),
       });
-
       if (!response.ok) {
         throw new Error("Api Error");
       }
@@ -26,7 +25,7 @@ export const createApiRecords = createAsyncThunk(
     }
   }
 );
-
+let id: any;
 const ApiSlice = createSlice({
   name: "records",
   initialState: {
@@ -37,17 +36,31 @@ const ApiSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(createApiRecords.fulfilled, (state, action) => {
-      // Handle successful creation of record
-      // You may update state here if necessary
+      console.log(state);
+      toast.update(id, {
+        render: "api created successfully",
+        type: "success",
+        isLoading: false,
+        data: action?.payload,
+        autoClose: 4000,
+      });
     });
     builder.addCase(createApiRecords.rejected, (state, action) => {
-      // Handle rejection of creating record
-      // You may update state here if necessary
+      toast.update(id, {
+        render: "failed to create your api",
+        type: "error",
+        isLoading: false,
+        autoClose: 4000,
+      });
+    });
+    builder.addCase(createApiRecords.pending, (state, action) => {
+      id = toast("hold on ..we are working on your request 🔃", {
+        autoClose: 3000,
+        closeOnClick: true,
+        isLoading: true,
+      });
     });
   },
 });
 
 export default ApiSlice.reducer;
-
-// Export any additional actions or selectors if needed
-// export const { someAction } = recordSlice.actions;

@@ -23,9 +23,9 @@ async function connection() {
     const opts = {
       bufferCommands: false,
     };
-
+    console.log(MONGODB_URI);
     cached.promise = mongoose.connect(`${MONGODB_URI}`, opts);
-    console.log('new connection for mongodb')
+    console.log("new connection for mongodb");
   }
 
   try {
@@ -38,4 +38,4 @@ async function connection() {
   return cached.conn;
 }
 
-export  {connection};
+export { connection };
